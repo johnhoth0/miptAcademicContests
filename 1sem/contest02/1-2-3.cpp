@@ -113,8 +113,8 @@ int solve(int test) {
 }
 
 int main() {
-    
+  
     solve(0);
-
+  
     return 0;
 }
