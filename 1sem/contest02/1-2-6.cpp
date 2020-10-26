@@ -11,6 +11,7 @@
 #include <cmath>
 #include <math.h>
 #include <set>
+// #include <multiset>
 #include <vector>
 #include <sstream>
 #include <string>
@@ -54,350 +55,188 @@ const ld EPS = 0.000001;
 using namespace std;
 
 
-// void Heapify1(vector<int>& A, int length, int i) {
-//     int l = 2 * i + 1;
-//     int r = 2 * i + 2;
-//     int largest = i;
-//     if (l < length && A[l] > A[largest])
-//         largest = l;
-//     if (r < length && A[r] > A[largest])
-//         largest = r;
-//     if (largest != i) {
-//         swap(A[i], A[largest]);
-//         Heapify1(A, length, largest);
-//     }
-// }
 
-// void Build_Heap1(vector<int>& A, int length) {
-//     for (int i = length / 2 - 1; i != (int)(-1); i--)
-//         Heapify1(A, length, i);
-// }
-
-// void Heapsort1(vector<int>& A) {
-//     Build_Heap1(A, A.size());
-//     for (int i = A.size() - 1; i > 0; i--) {
-//         swap(A[0], A[i]);
-//         Heapify1(A, i, 0);
-//     }
-// }
-
-// void Heap_Increase_Key1(vector<int>& A, int length, int i, int key) {
-//     if (key < A[i])
-//             return;
-//     A[i] = key;
-//     while (i > 0 && A[(i-1)/2] < A[i]) {
-//         swap(A[(i-1)/2], A[i]);
-//         i = (i-1)/2;
-//     }
-// }
-
-// void Heap_Insert1(vector<int>& A, int length, int key) {
-//     length++;
-//     if (length > A.size())
-//         A.resize(length);
-//     Heap_Increase_Key1(A, length, length - 1, key);
-// }
-
-// int Heap_Extract1(vector<int>& A, int length) {
-//     if (length == 0)
-//         return -1;
-//     int max_element = A[0];
-//     A[0] = A[length - 1];
-//     length--;
-//     Heapify1(A, length, 0);
-//     return max_element;
-// }
-
-// /////////////////////////////
-
-
-// void Heapify2(vector<int>& A, int length, int i) {
-//     int l = 2 * i + 1;
-//     int r = 2 * i + 2;
-//     int largest = i;
-//     if (l < length && A[l] < A[largest])
-//         largest = l;
-//     if (r < length && A[r] < A[largest])
-//         largest = r;
-//     if (largest != i) {
-//         swap(A[i], A[largest]);
-//         Heapify2(A, length, largest);
-//     }
-// }
-
-// void Build_Heap2(vector<int>& A, int length) {
-//     for (int i = length / 2 - 1; i != (int)(-1); i--)
-//         Heapify2(A, length, i);
-// }
-
-// void Heapsort2(vector<int>& A) {
-//     Build_Heap2(A, A.size());
-//     for (int i = A.size() - 1; i > 0; i--) {
-//         swap(A[0], A[i]);
-//         Heapify2(A, i, 0);
-//     }
-// }
-
-// void Heap_Increase_Key2(vector<int>& A, int length, int i, int key) {
-//     if (key > A[i])
-//             return;
-//     A[i] = key;
-//     while (i > 0 && A[(i-1)/2] > A[i]) {
-//         swap(A[(i-1)/2], A[i]);
-//         i = (i-1)/2;
-//     }
-// }
-
-// void Heap_Insert2(vector<int>& A, int length, int key) {
-//     length++;
-//     if (length > A.size())
-//         A.resize(length);
-//     Heap_Increase_Key2(A, length, length - 1, key);
-// }
-
-// int Heap_Extract2(vector<int>& A, int length) {
-//     if (length == 0)
-//         return -1;
-//     int min_element = A[0];
-//     A[0] = A[length - 1];
-//     length--;
-//     Heapify2(A, length, 0);
-//     return min_element;
-// }
-// //////////////////
-
-ll jojo, koichi=jojo;
-int n, k;
-ll len=-1;
-vector <ll> a;
-vector <pair <ll, int>> theworld;
-// vector <int> avdol;
-
-vector <pair <ll, ll>> hamon;
-
-ll dist_anticlock(ll p1, ll p2) {
-    if (p1 <= p2) {
-        return p2 - p1;
-    } else {
-        return jojo - (p1 - p2);
+bool mycmp(const pair <ll, ll> &a, const pair <ll, ll> &b) {
+    if (a.sd == b.sd) {
+        return a.ft < b.ft;
     }
+    return a.sd < b.sd;
 }
-
-ll dist_clock(ll p1, ll p2) {
-    if (p1 < p2) {
-        return jojo - abs(p1 - p2);
-    } else {
-        return abs(p2 - p1);
-    }
-}
-
-
-ll well_good(ll p, ll move) {
-    ll lol = p % len;
-    ll kek = (koichi+move) % len;
-    if (lol <= kek) return kek - lol;
-    else return len - (lol - kek);
-}
-
-
-ll well_tenet(ll p, ll move) {
-    ll lol = p % len;
-    ll kek = (koichi+move) % len;
-    if (lol >= kek) return lol - kek;
-    else return len - (kek - lol);
-}
-
-bool cmpwell(const pair <ll, int> &a, const pair <ll, int> &b) {
-
-    ll resa = well_good(a.ft, 0);
-    ll resb = well_good(b.ft, 0);
-
-    return (resa < resb || (resa == resb && a.ft < b.ft));
-}
-
-
 
 int solve(int test) {
-    cin >> jojo;
-    cin >> n >> k;
-    len = jojo / k;
-    a.resize(n);
-    set <ll> avdol; 
-    // avdol.resize(k, INF);
-
-
-    vector <pair <ll, int>> jopa;
-    vector <pair <ll, ll>> dovod;
-
-    koichi = jojo;
-    for (int i=0; i<n; ++i) {
-        cin >> a[i];
-        a[i]--;
-        jopa.pb(mp((a[i])%len, i));
-        jopa.pb(mp((a[i]+1)%len, i));
-        koichi = min(koichi, a[i]);
-        koichi = min(koichi, (a[i]+1)%jojo);
-    }
+    ll L;
+    ll n, k;
+    ll len;
+    vector <ll> cell;
+    vector <pair <ll, ll>> arr;
     
-    koichi %= len;
 
-    sort(all(jopa));
-    // jopa.erase(unique(all(jopa)), jopa.end());
 
-    // for (int i=0; i<sz(jopa); ++i) {
-    //     cout << jopa[i].ft << ' ' << jopa[i].sd << endl;
-    // }
-    // return 0;
-    theworld.pb(jopa[0]);
-    for (int i=1; i<sz(jopa); ++i) {
-        if (jopa[i].ft!=jopa[i-1].ft) {
-            theworld.pb(jopa[i]);
+    cin >> L >> n >> k;
+    cell.resize(n);
+
+    len = L / k;
+
+    ll start = INF;
+
+    for (int i=0; i<n; ++i) {
+        cin >> cell[i];
+        cell[i]--;
+        start = min(start, cell[i]);
+    }
+
+    /// zagluchka
+
+    if (n == 1) {
+        cout << "1 " << L << endl << L << endl;
+        return 0;
+    }
+
+
+    for (int i=0; i<n; ++i) {
+        cell[i] = (L + cell[i] - start) % L;
+    }
+
+    /// end of input and begin of solution
+
+    int validol = 1;
+    for (int i=0; i<n; ++i) {
+        arr.push_back(make_pair(cell[i], cell[i]%len));
+        if (i > 0) {
+            if (arr[i-1].sd != arr[i].sd) validol = 0;
         }
     }
 
-    sort(all(theworld), cmpwell);
-    
-    // avdol.insert(koichi % len);
-
-    hamon.resize(sz(a));
-    // dovod.resize(sz(theworld));
-
-
-    for (int i=0; i<sz(a); ++i) {
-        hamon[i] = mp(well_tenet(a[i], 0), i);
-        // dovod[i] = mp(well_good(theworld[i].ft), i);
-        trace3(i, a[i], hamon[i].ft);
+    if (validol) {
+        cout << "0 " << L << endl << L << endl;
+        return 0;
     }
 
-    vector <int> speedwagon(k, 0);
-    vector <int> senpai(n, 0);
-    // int minim=INF, maxim=-INF; 
-    for (ll i=0; i<sz(a); ++i) {
-        senpai[i] = (a[i]-koichi) / len;
-        speedwagon[senpai[i]]++;
+    sort(all(arr), mycmp);
 
-    }
-
-
-    trace1(koichi);
-    // cout << "senpai ";
-    // for (int i=0; i<n; ++i) {
-    //     cout << senpai[i]  << ' ';
+    // cerr << "arr : \n";
+    // for (auto i:arr) {
+    //     cout << i.ft << ' ' << i.sd << endl;
     // }
     // cout << endl;
 
 
-    multiset <int> heap;
-    for  (int i:speedwagon) {
-        heap.insert(i);
-        // minim = min(minim, i);
-        // maxim = max(maxim, i);
-        cout << i << ' ';
-    }
-    cout << endl;
-    cout << "popa" << endl;
+    vector <ll> seg(k);
+    vector <ll> gde(n);
 
-    sort(all(hamon));
-
-
-    int killdaho=(*heap.rbegin())-(*heap.begin());
-    ll bitch=koichi%len;
-    avdol.insert(bitch);// = killdaho;
-    ll numbrew=1;
-
-
-    // for (int i=0; i<sz(hamon); ++i) {
-    //     cout << i << ' ' << hamon[i].ft << ' ' << hamon[i].sd << endl;
-    // }
-    // cout << endl << endl;
-
-    // return 0;
-
-
-    ll thehand=0;
-    int lisalisa=0;
-    for (int i=1; i<sz(theworld); ++i) {
-        // move for well_good(theworld[i].ft)
-
-        ll yournextline = well_good(theworld[i].ft, thehand);
-        trace3(i, theworld[i].ft, yournextline);
-        thehand += yournextline;
-        while (thehand > hamon[lisalisa%sz(hamon)].ft) {
-            trace1(thehand);
-
-            cout << "senpai ";
-            for (int i=0; i<n; ++i) {
-                cout << senpai[i]  << ' ';
-            }
-            cout << endl;
-
-
-
-            ll whothefuckitis = hamon[lisalisa%sz(hamon)].sd;
-            trace2(whothefuckitis, theworld[whothefuckitis].sd);
-            cout << "find for " << speedwagon[senpai[theworld[whothefuckitis].sd]] << endl;
-            heap.erase(heap.find(speedwagon[senpai[theworld[whothefuckitis].sd]]));
-            speedwagon[senpai[theworld[whothefuckitis].sd]]--;
-            heap.insert(speedwagon[senpai[theworld[whothefuckitis].sd]]);
-
-            senpai[theworld[whothefuckitis].sd] = (senpai[theworld[whothefuckitis].sd]+k-1)%k;
-
-
-            cout << "look for " << speedwagon[senpai[theworld[whothefuckitis].sd]] << endl;
-
-            heap.erase(heap.find(speedwagon[senpai[theworld[whothefuckitis].sd]]));
-            speedwagon[senpai[theworld[whothefuckitis].sd]]++;
-            heap.insert(speedwagon[senpai[theworld[whothefuckitis].sd]]);
-
-            hamon[lisalisa%sz(hamon)].ft += yournextline;
-
-            cout << "WE MOVED " << hamon[lisalisa%sz(hamon)].sd << endl;
-
-            cout << "heap : ";
-            for (int x:heap) {
-                cout << x << ' ';
-            }
-            cout << endl;
-            lisalisa++;
-        }
-        
-        cout << "opa " << (*heap.rbegin())-(*heap.begin()) << endl;
-        if (killdaho > (*heap.rbegin())-(*heap.begin())) {
-            killdaho = (*heap.rbegin())-(*heap.begin());
-            numbrew = 0;
-            avdol.clear();
-            trace1(sz(avdol));
-            bitch = theworld[i].ft;
-        }
-        if (killdaho == (*heap.rbegin())-(*heap.begin())) {
-            numbrew++;
-            avdol.insert(theworld[i].ft % len);
-            trace2(killdaho, theworld[i].ft);
-            // = killdaho;
-            // avdol[theworld[i].ft % k] = killdaho;
-        }
-
-
+    for (int i=0; i<n; ++i) {
+        gde[i] = arr[i].ft/len;
+        seg[gde[i]]++;
     }
 
 
+    // cerr << "gde: ";
+    // for (auto x:gde) cout << x << ' ';
+    // cout << endl;
+    // cerr << "seg: ";
+    // for (auto x:seg) cout << x << ' ';
+    // cout << endl;
 
-    cerr << "JOPA" << endl; ///////////////////////////////////////////////
+    multiset <ll> heap;
 
-    // ll echoes=koichi;
-    // for (int i=0; i<k; ++i,echoes+=k, echoes%=jojo)
-    //     theworld.pb(mp(echoes, -1));
-
-
-
-    ///////// ASWER 
-    cout << "avdol : ";
-    int yesiam=sz(avdol);
-    for (auto elem : avdol) {
-        cout << (elem)<< ' '; 
+    for (int i=0; i<k; ++i) {
+        heap.insert(seg[i]);
     }
-    cout << endl << endl;
-    cout << killdaho << ' ' << (yesiam) * k << endl << bitch+1 << endl;
+
+    // cerr << "heap: ";
+    // for (auto x:heap) cout << x << ' ';
+    // cout << endl;
+
+    ll answer = 0; // kolichestvo
+    ll result = (*heap.rbegin()) - (*heap.begin()); // F
+    ll primer = 0;
+
+
+    ll sdvig=0; // [0, len)
+
+
+
+    vector <pair <ll, ll>> point;// = {mp(result, primer)};
+
+    for (int i=0, j=0; i<n;) {
+        j = i;
+        // cout << "NEW SDVIG ";trace2(i, arr[i].sd);
+        while (j<n && arr[j].sd == arr[i].sd) {
+            /// seg v kotorom bil --
+
+            // trace3(i, j, arr[j].sd);
+
+            heap.erase(heap.find(seg[gde[j]]));
+            seg[gde[j]]--;
+            heap.insert(seg[gde[j]]);
+
+            // cerr << "gde1: ";
+            // for (auto x:gde) cout << x << ' ';
+            // cout << endl;
+            // cerr << "seg1: ";
+            // for (auto x:seg) cout << x << ' ';
+            // cout << endl;
+            /// update gde
+
+            gde[j] = (k - 1 + gde[j]) % k;
+
+            /// seg v kotoriy popal ++
+
+            heap.erase(heap.find(seg[gde[j]]));
+            seg[gde[j]]++;
+            heap.insert(seg[gde[j]]);
+
+            // cerr << "gde2: ";
+            // for (auto x:gde) cout << x << ' ';
+            // cout << endl;
+            // cerr << "seg2: ";
+            // for (auto x:seg) cout << x << ' ';
+            // cout << endl;
+
+            // cerr << "heap: ";
+            // for (auto x:heap) cout << x << ' ';
+            // cout << endl;
+
+            j++;
+        }
+
+        ll newresult = (*heap.rbegin()) - (*heap.begin());
+
+        // trace2(i, newresult);
+
+        result = min(result, newresult);
+
+        /// TODO update answer
+        point.pb(mp(newresult, arr[i].sd));
+
+
+        if (i <= j) {
+            i = j;
+        }  else {
+            i++;
+        }
+
+    }
+
+
+
+
+    answer = 0;
+    point.pb(point[0]);
+    for (int i=0; i<sz(point)-1; ++i) {
+        // trace2(point[i].ft, point[i].sd);
+        if (point[i].ft == result) {
+            primer = point[i].sd;
+            answer += (len + point[i+1].sd - point[i].sd) % len;
+            // trace1((len + point[i+1].sd - point[i].sd) % len);
+        }
+    }
+
+
+
+    /// answers output
+
+    cout << result << ' ' << answer * k << endl << ((primer + start) % L) + 1 << endl;
 
     return 0;
 }
