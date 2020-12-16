@@ -9,6 +9,8 @@ const int DefaultBufferSize = 4;
 class Stack {
 public:
     Stack();
+    Stack( const Stack& ) = delete;
+    void Stack=( const Stack& ) = delete;
     ~Stack();
 
     void push(int elem);
@@ -27,6 +29,9 @@ private:
         Node *next;
 
         Node(int _data) : data(_data), next(nullptr) {}
+        Node( const Node& ) = delete;
+        void Node=( const Node& ) = delete;
+        ~Node() {};
     };
 
     Node* head;
