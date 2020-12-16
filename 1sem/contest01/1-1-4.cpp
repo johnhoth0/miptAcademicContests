@@ -6,33 +6,59 @@
 #include <algorithm>
 #include <deque>
 
-
-int solve(int test) {
-    int n;
-    std::cin >> n;
+struct MyQueue
+{
     std::deque <int> beginning, ending;
-
-    for (int query = 0; query < n; ++query) {
-        char cmd;
-        std::cin >> cmd;
-        if (cmd == '-') {
-            std::cout << beginning.front() << std::endl;
-            beginning.pop_front();
-        } else if (cmd == '+') {
-            int goblin;
-            std::cin >> goblin;
-            ending.push_back(goblin);
-        } else if (cmd == '*') {
-            int goblin;
-            std::cin >> goblin;
-            ending.push_front(goblin);
-        }
-
+    
+    void normalize() {
         if (ending.size() > beginning.size()) {
             beginning.push_back(ending.front());
             ending.pop_front();
         }
     }
+
+    int pop_front() {
+        int val = beginning.front();
+        beginning.pop_front();
+        normalize();
+        return val;
+    }
+
+    void push_back(int val) {
+        ending.push_back(val);
+        normalize();
+    }
+
+    void push_center(int val) {
+        ending.push_front(val);
+        normalize();
+    }
+
+};
+
+
+int solve(int test) {
+    int n;
+    std::cin >> n;
+
+    MyQueue G;
+
+    for (int query = 0; query < n; ++query) {
+        char cmd;
+        std::cin >> cmd;
+        if (cmd == '-') {
+            std::cout << G.pop_front() << std::endl;
+        } else if (cmd == '+') {
+            int goblin;
+            std::cin >> goblin;
+            G.push_back(goblin);
+        } else { // if (cmd == '*') 
+            int goblin;
+            std::cin >> goblin;
+            G.push_center(goblin);
+        }
+    }
+
 
 
     return 0;
