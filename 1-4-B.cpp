@@ -51,8 +51,8 @@ const ld EPS = 0.000001;
 // #define endl "\n"
 
 template <class INFO, typename T> 
-struct SegTree {
-
+class SegTree {
+private:
     struct Node
     {
         T val, d;
@@ -129,6 +129,7 @@ struct SegTree {
         push(v, tl, tr);
     }
 
+public:
     SegTree(size_t _n) {
         n = _n;
         t.resize(n << 2);
@@ -139,7 +140,12 @@ struct SegTree {
         t.resize(n << 2);
         build(1, 0, n, arr);
     }
-
+    T get(int l, int r) {
+        return get(1, 0, n, l, r);
+    }
+    T update(int pos, T val) {
+        upd(1, 0, n, pos, pos, val);
+    }
 
 };
 
@@ -169,17 +175,7 @@ int solve() {
             std::cin >> arr1[i/2];
         }
     }
-
-    // for (int elem : arr0) {
-    //     std::cout << elem << ' ';
-    // } 
-    // std::cout << std::endl;
-    // for (int elem : arr1) {
-    //     std::cout << elem << ' ';
-    // } 
-    // std::cout << std::endl;
     
-
     SegTree<SumOnLL, ll> treeEven(sz(arr0), arr0);
     SegTree<SumOnLL, ll> treeOdd(sz(arr1), arr1);
 
@@ -188,8 +184,9 @@ int solve() {
     for (int i = 0; i < k; ++i) {
         int cmd, x, y;
         std::cin >> cmd >> x >> y;
+        x--;
         if (cmd == 1) {
-            x--;y--;
+            y--;
             int Ex=x/2, Ey=y/2, Ox=x/2, Oy=y/2;
             if (x % 2 == 0) {
                 Ex = x / 2;
@@ -203,39 +200,27 @@ int solve() {
             } else {
                 Ey = y / 2;
             }
-            // std::cerr << x << ' ' << y << " : "; 
-            // std::cerr << Ex << ' ' << Ey << " | " << Ox << ' ' << Oy << std::endl;
             if (x != y) {
                 if (x % 2 == 0) {
-                    std::cout << treeEven.get(1, 0, sz(arr0), Ex, Ey) - treeOdd.get(1, 0, sz(arr1), Ox, Oy) << std::endl;
+                    std::cout << treeEven.get(Ex, Ey) - treeOdd.get(Ox, Oy) << std::endl;
                 } else {
-                    std::cout << -treeEven.get(1, 0, sz(arr0), Ex, Ey) + treeOdd.get(1, 0, sz(arr1), Ox, Oy) << std::endl;
+                    std::cout << -treeEven.get(Ex, Ey) + treeOdd.get(sz(arr1), Ox, Oy) << std::endl;
                 }
             } else {
                 if (x % 2 == 0) {
-                    std::cout << treeEven.get(1, 0, sz(arr0), Ex, Ey) << std::endl;
+                    std::cout << treeEven.get(Ex, Ey) << std::endl;
                 } else {
-                    std::cout << treeOdd.get(1, 0, sz(arr1), Ox, Oy) << std::endl;
+                    std::cout << treeOdd.get(Ox, Oy) << std::endl;
                 }
 
             }
         } else {
-            x--;
             if (x % 2 == 0) {
-                treeEven.upd(1, 0, sz(arr0), x/2, x/2, y);
+                treeEven.update(x/2, y);
             } else {
-                treeOdd.upd(1, 0, sz(arr1), x/2, x/2, y);
+                treeOdd.update(x/2, y);
             }
         }
-
-        // for (int i=0; i<n; ++i) {
-        //     if (i%2 == 0) {
-        //         std::cout << treeEven.get(1, 0, sz(arr0), i/2, i/2) << ' ';
-        //     } else{
-        //         std::cout << treeOdd.get(1, 0, sz(arr1), i/2, i/2) << ' ';
-        //     }
-        // }
-        // std::cout << std::endl;
     }
     
 
