@@ -53,7 +53,47 @@ const ld EPS = 0.000001;
 
 using namespace std;
 
+class SetOfSets {
+private:
+	map <int, set <ll>> sets;
+	map <ll, set <int>> where;
 
+public:
+	void insert(ll x, ll y) {
+		sets[y].insert(x);
+		where[x].insert(y);
+	}
+	void erase(ll x, ll y) {
+		sets[y].erase(x);
+		where[x].erase(y);
+	}
+	void clear(ll x) {
+		for (auto elem : sets[x]) {
+			where[elem].erase(x);
+		}
+		sets[x].clear();
+	}
+	void listset(ll x) {
+		if (sets[x].empty()) {
+			cout << "-1\n";
+		} else {
+			for (auto elem : sets[x]) {
+				cout << elem << ' ';
+			}
+			cout << '\n';
+		}
+	}
+	void listsetof(ll x) {
+		if (where[x].empty()) {
+			cout << "-1\n";
+		} else {
+			for (auto elem : where[x]) {
+				cout << elem << ' ';
+			}
+			cout << '\n';
+		}
+	}
+};
 
 int solve(int test) {
 	ios_base::sync_with_stdio(false);
@@ -68,45 +108,22 @@ int solve(int test) {
 	string s;
 	ll x, y;
 
-	map <int, set <ll>> sets;
-	map <ll, set <int>> where;
+	SetOfSets mem;
+
 	while (k--) {
 		cin >> s >> x;
 		if (s[0] == 'A') {
 			cin >> y;
-
-			sets[y].insert(x);
-			where[x].insert(y);
-
+			mem.insert(x, y);
 		} else if (s[0] == 'D') {
 			cin >> y;
-
-			sets[y].erase(x);
-			where[x].erase(y);
-
+			mem.erase(x, y);
 		} else if (s[0] == 'C') {
-			for (auto elem : sets[x]) {
-				where[elem].erase(x);
-			}
-			sets[x].clear();
+			mem.clear(x);
 		} else if (sz(s) == 7) {
-			if (sets[x].empty()) {
-				cout << "-1\n";
-			} else {
-				for (auto elem : sets[x]) {
-					cout << elem << ' ';
-				}
-				cout << '\n';
-			}
+			mem.listset(x);
 		} else if (sz(s) == 10) {
-			if (where[x].empty()) {
-				cout << "-1\n";
-			} else {
-				for (auto elem : where[x]) {
-					cout << elem << ' ';
-				}
-				cout << '\n';
-			}
+			mem.listsetof(x);
 		}
 	}
 
